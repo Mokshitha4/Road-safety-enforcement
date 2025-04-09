@@ -23,3 +23,4 @@ For robust vehicle identification, the number plate identification encompasses d
 where the number plate is localized, and recognition. The project employs advanced deep
 learning techniques such as YOLOV9, Followed by Optical Character Recognition using
 TrOCR.
+https://openurl.ebsco.com/EPDB%3Agcd%3A5%3A23468901/detailv2?sid=ebsco%3Aplink%3Ascholar&id=ebsco%3Agcd%3A181715085&crl=c&link_origin=www.google.com

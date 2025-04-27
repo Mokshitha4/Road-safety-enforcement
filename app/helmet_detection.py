@@ -1,22 +1,25 @@
+# code to detect helmets using YOLOv9 model
+
 from django.shortcuts import render
-# from yolov9.detect import run
-# Create your views here.
 import subprocess
 import uuid
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
-from PIL import Image
-from ultralytics import YOLO
 import cv2
 import os
 import pandas as pd
+
 # Generate a UUID
 def generate_uuid():
     my_uuid = uuid.uuid4()
     return my_uuid
 
+#Function to detect helmets using YOLOv9 model
+# This function takes an image path as input, generates a unique filename, and runs the YOLOv9 detection script with the specified parameters.
+# The detected results are saved in a specified directory, and the function returns the path to the saved results.
 def detect_helmet(img_path):
     filename= generate_uuid()
-    # run(source=img_path,weights='C:/Users/mmandadi/work_proj/django_project/final_yr_project/models_yolov9/best_numberplate.pt',save_crop=True,name='exp',project='C:/Users/mmandadi/work_proj/django_project/final_yr_project/results')
-    subprocess.run("python C:/Users/mmandadi/work_proj/django_project/final_yr_project/django_app/yolov9/detect.py --img 1280 --conf 0.1 --device 0 --weights C:/Users/mmandadi/work_proj/django_project/final_yr_project/models_yolov9/best_helmet.pt --source "+str(img_path)+" --save-crop --project C:/Users/mmandadi/work_proj/django_project/final_yr_project/helmet_results --name "+str(filename))
-    return os.path.join("C:/Users/mmandadi/work_proj/django_project/final_yr_project/helmet_results/",str(filename))
-# detect_helmet("C:/Users/mmandadi/work_proj/django_project/final_yr_project/results/img_13_cropped_expanded_1_motorcycle.jpg")
+    try:
+        subprocess.run("python yolov9/detect.py --img 1280 --conf 0.1 --device 0 --weights /models_yolov9/best_helmet.pt --source "+str(img_path)+" --save-crop --project /helmet_results --name "+str(filename), check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while detecting helmet: {e}")
+        return None
+    return os.path.join("/helmet_results/",str(filename))

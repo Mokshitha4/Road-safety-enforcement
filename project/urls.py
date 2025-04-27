@@ -22,5 +22,5 @@ from django_app.vehicle_detection import detect_vehicle
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('input/',render_inputs),
-    path('detect/',detect_vehicle,name="detect")
+    path('detect/',detect_vehicle,name="detect") #detects violation 
 ]

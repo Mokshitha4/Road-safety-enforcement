@@ -11,7 +11,7 @@ import torch
 from django_app.helmet_detection import detect_helmet
 from django_app.smoke_detection import detect_smoke
 
-model = YOLO('C:/Users/mmandadi/work_proj/django_project/final_yr_project/model_yolov8/FGVD_vehicle_detcetion.pt')  # pretrained YOLOv8n model
+model = YOLO('model_yolov8/FGVD_vehicle_detcetion.pt')  # pretrained YOLOv8n model
 
 def expand_bbox_to_top(bbox, image_shape, expansion_factor=0.1):
     """
@@ -59,8 +59,6 @@ def crop_and_expand_image(image, model, save_dir, expansion_factor):
         expansion_factor (float, optional): Factor for expanding the bounding box. Defaults to 0.2.
     """
 
-    # Read the image
-    # image = cv2.imread(image_path)
     image_path="detections"
     # Move image to GPU if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -146,19 +144,17 @@ def crop_and_expand_image(image, model, save_dir, expansion_factor):
 
 
 # Example usage
-image_path = "C:/Users/mmandadi/work_proj/django_project/final_yr_project/inputs/img_13.jpeg"
-save_dir = "C:/Users/mmandadi/work_proj/django_project/final_yr_project/results/"
+image_path = "/inputs/img_13.jpeg"
+save_dir = "/results/"
 expansion_factor = 0.2  # Adjust expansion factor as needed
 
-
-
+# Call the function to detect vehicles and save cropped images
 def detect_vehicle(request):
     if request.method=='POST':
-        uploaded_file = request.FILES['image']
+        uploaded_file = request.FILES['file']
         img = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
         dict_counts=crop_and_expand_image(img, model, save_dir, 0.1)
-        # [two_wheelers,other_vehicles, smoke_count, without_helmet_count ]=list_counts
-        print(dict_counts)
+        #print(dict_counts)  # Uncommented for debugging purposes
         return HttpResponse(json.dumps(dict_counts))
-        # return HttpResponse("Two wheelers detected :"+two_wheelers+", Other vehicles detected :"+other_vehicles+"\n Vehicles with smoke emissions: "+smoke_count+"Two-wheelers helmet Violation detected :"+without_helmet_count)
-
+    else:
+        return HttpResponse("Invalid request method. Please use POST.")

@@ -108,11 +108,12 @@ Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 ---
 
-Sample output:
+## Sample outputs:
 ![image](https://github.com/user-attachments/assets/665f0626-b256-4a01-814f-f0e70467f2ca)
 ![image](https://github.com/user-attachments/assets/febf275f-51bc-49db-932d-c3ee84403c9c)
 ![image](https://github.com/user-attachments/assets/1d253dcf-a319-47f8-8c7d-21013e7623f1)
 
+![image](https://github.com/user-attachments/assets/a0e64030-74b1-49b5-bd86-3417dd49968d)
 
 
 

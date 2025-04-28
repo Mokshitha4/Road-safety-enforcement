@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django_app.views import detect_numberplate, render_inputs
-from django_app.vehicle_detection import detect_vehicle
+from django_app.violation_detection import detect_vehicle
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('input/',render_inputs),
-    path('detect/',detect_vehicle,name="detect") #detects violation 
+    path('input/',render_inputs), # renders input html page
+    path('detect/',detect_vehicle,name="detect") #detects violations 
 ]

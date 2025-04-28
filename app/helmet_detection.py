@@ -1,16 +1,10 @@
 # code to detect helmets using YOLOv9 model
 
-from django.shortcuts import render
 import subprocess
-import uuid
-import cv2
 import os
 import pandas as pd
+from views import generate_uuid
 
-# Generate a UUID
-def generate_uuid():
-    my_uuid = uuid.uuid4()
-    return my_uuid
 
 #Function to detect helmets using YOLOv9 model
 # This function takes an image path as input, generates a unique filename, and runs the YOLOv9 detection script with the specified parameters.

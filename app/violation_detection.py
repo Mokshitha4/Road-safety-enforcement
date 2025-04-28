@@ -4,7 +4,7 @@ from ultralytics import YOLO
 from django.shortcuts import render
 import os
 import json
-from django_app.views import detect_numberplate
+from django_app.helmet_detection import detect_numberplate, perform_OCR
 from django.http import HttpResponse
 import cv2
 import torch
@@ -48,15 +48,16 @@ def expand_bbox_to_top(bbox, image_shape, expansion_factor=0.1):
     return (int(x1), int(new_y1), int(x2), int(y2),height)
 
 
-def crop_and_expand_image(image, model, save_dir, expansion_factor):
+def crop_image_detect_violations(image, model, save_dir, expansion_factor):
     """
-    Crops and expands an image based on YOLOv8 predictions using GPU if available.
+    Crops and expands an image based on YOLOv8 predictions using GPU if available. Then detects violations for each detected vehicle.
 
     Args:
         image_path (str): Path to the image.
         model: Loaded YOLOv8 model.
         save_dir (str): Directory to save the cropped and expanded images.
         expansion_factor (float, optional): Factor for expanding the bounding box. Defaults to 0.2.
+    output: A dictionary containing counts of detected vehicles and violations.
     """
 
     image_path="detections"
@@ -94,7 +95,7 @@ def crop_and_expand_image(image, model, save_dir, expansion_factor):
         y1 = max(0, y1)  # Clamp y1 to 0 (avoid negative values) 
         y2 = min(height, y2)  # Clamp y2 to image height (avoid exceeding image boundaries)
 
-# Crop the image using the extracted coordinates
+        # Crop the image using the extracted coordinates
 
         cropped_image = image[y1:y2,x1:x2] # Move cropped image back to CPU
 
@@ -128,14 +129,20 @@ def crop_and_expand_image(image, model, save_dir, expansion_factor):
                     without_helmet_count += 1
                     helmet_status = False
                     number_plate_files=detect_numberplate(output_file)
+                    vehicle_identification_numbers= perform_OCR(number_plate_files)
+                    print("Vehicle identification numbers: ", vehicle_identification_numbers)
                 elif os.path.exists(with_helmet):
                     with_helmet_count += 1
                 elif smoke_status:
                     number_plate_files=detect_numberplate(output_file)
+                    vehicle_identification_numbers= perform_OCR(number_plate_files)
+                    print("Vehicle identification numbers: ", vehicle_identification_numbers)
         else:
             other_vehicles.append(output_file)
             if smoke_status:
                 number_plate_files=detect_numberplate(output_file)
+                vehicle_identification_numbers= perform_OCR(number_plate_files)
+                print("Vehicle identification numbers: ", vehicle_identification_numbers)
         two_wheelers_count=len(two_wheelers)
         other_vehicles_count=len(other_vehicles)
     return {"Two wheelers count ": two_wheelers_count,"Other vehicles count": other_vehicles_count,"Vehicles emitting smoke": smoke_count,"Vehicles with helmet violation": without_helmet_count}
@@ -153,7 +160,7 @@ def detect_vehicle(request):
     if request.method=='POST':
         uploaded_file = request.FILES['file']
         img = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
-        dict_counts=crop_and_expand_image(img, model, save_dir, 0.1)
+        dict_counts=crop_image_detect_violations(img, model, save_dir, 0.1)
         #print(dict_counts)  # Uncommented for debugging purposes
         return HttpResponse(json.dumps(dict_counts))
     else:

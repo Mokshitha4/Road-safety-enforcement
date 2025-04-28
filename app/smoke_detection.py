@@ -1,18 +1,9 @@
 # code snippet to detect vehicles emitting smoke using YOLOv9 model
 
-from django.shortcuts import render
 import subprocess
-import uuid
 from django.http import HttpResponse
-import cv2
-import numpy as np
 import os 
-import pandas as pd
-
-# Generate a UUID
-def generate_uuid():
-    my_uuid = uuid.uuid4()
-    return my_uuid
+from views import generate_uuid
 
 # Function to detect vehicles emitting smoke using YOLOv9 model
 # This function takes an image path as input, generates a unique filename, and runs the YOLOv9 detection script with the specified parameters.

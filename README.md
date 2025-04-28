@@ -37,10 +37,14 @@ Project execution and results: https://docs.google.com/document/d/1dZpm76O65aDAs
 ```
 Road-safety-enforcement/
 │
-├── app/                 # Django app handling frontend and backend logic
-│   ├── templates/       # HTML templates (upload form, detection result)
-│   ├── views.py         # Handles detection logic and API routing
-│   └── urls.py          # URL mapping
+├── app/                        # Django app handling frontend and backend logic
+│   ├── templates/              # HTML templates (upload form, detection result)
+│   ├── views.py                # Handles API routing, renders template
+│   └── urls.py                 # URL mapping
+│   └── violation_detection.py  # Handles vehicle detection and vioation detection logic 
+│   └── helemt_detection.py     # Handles helemt detection 
+│   └── smoke_detection.py      # Handles vehicle emission detection 
+│   └── detect_numberplate.py   # Handles number plate detection logic   
 │
 ├── inputs/              # Sample traffic images and videos for testing
 │

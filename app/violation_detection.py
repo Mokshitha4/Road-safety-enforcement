@@ -11,7 +11,7 @@ import torch
 from django_app.helmet_detection import detect_helmet
 from django_app.smoke_detection import detect_smoke
 
-model = YOLO('model_yolov8/FGVD_vehicle_detcetion.pt')  # pretrained YOLOv8n model
+model = YOLO('model_yolov8/FGVD_vehicle_detcetion.pt')  # trained YOLOv8 model
 
 def expand_bbox_to_top(bbox, image_shape, expansion_factor=0.1):
     """
@@ -144,11 +144,11 @@ def crop_and_expand_image(image, model, save_dir, expansion_factor):
 
 
 # Example usage
-image_path = "/inputs/img_13.jpeg"
+# image_path = "/inputs/img.jpeg"
 save_dir = "/results/"
 expansion_factor = 0.2  # Adjust expansion factor as needed
 
-# Call the function to detect vehicles and save cropped images
+# Call the function to detect vehicles, save cropped images and detect violation
 def detect_vehicle(request):
     if request.method=='POST':
         uploaded_file = request.FILES['file']

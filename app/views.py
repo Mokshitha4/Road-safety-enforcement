@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 import subprocess
 from django.shortcuts import render
@@ -10,14 +9,16 @@ import cv2
 import os
 import pandas as pd
 
-#load transformer OCR model
+# Render input_interface.html template
 def render_inputs(request):
     return render(request,"input_interface.html")
 
+# function to show image
 def show_image(pathStr):
     img = Image.open(pathStr).convert("RGB")
     return img
 
+# load transformer OCR model
 # Function to perform OCR on the image using TrOCR
 def ocr_image(src_img):
     processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed") 
@@ -42,10 +43,3 @@ def detect_numberplate(img_path):
         return None
     return os.path.join("results/numberPlates_results/", str(filename))
 
-
-def perform_OCR(img_path):
-    image = show_image(img_path)
-    image1 = image.crop((0, 10, image.size[0], 40))
-    strOCR=str(ocr_image(image1))
-    print(strOCR)
-    return strOCR 

@@ -40,12 +40,14 @@ Road-safety-enforcement/
 ├── app/                        # Django app handling frontend and backend logic
 │   ├── templates/              # HTML templates (upload form, detection result)
 │   ├── views.py                # Handles API routing, renders template
-│   └── urls.py                 # URL mapping
 │   └── violation_detection.py  # Handles vehicle detection and vioation detection logic 
 │   └── helemt_detection.py     # Handles helemt detection 
 │   └── smoke_detection.py      # Handles vehicle emission detection 
 │   └── detect_numberplate.py   # Handles number plate detection logic   
-│
+|-- project/
+│   └── urls.py                 # URL mapping
+│   └── settings.py                
+| 
 ├── inputs/              # Sample traffic images and videos for testing
 │
 ├── yolov8_model/        # YOLOv8 models for helmet violation detection
